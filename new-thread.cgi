@@ -22,8 +22,13 @@ query=`cat /dev/stdin`
 post_text=`echo "$query" | sed 's/content=//' | urldecode | htmlencode`
 
 # Make the new thread.
-thid=`new_thread "$REMOTE_ADDR" Anonymous "$post_text"`
+thid=`next_thread_id`
 
-# Redirect to the new thread.
-echo "Location: $URL_ROOT/thread.cgi?$thid"
-echo
+if new_thread "$REMOTE_ADDR" Anonymous "$post_text"; then
+    # Redirect to the new thread.
+    echo "Location: $URL_ROOT/thread.cgi?$thid"
+    echo
+else
+    error "$error"
+fi
+

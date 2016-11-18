@@ -44,16 +44,32 @@ new_thread() {
     dir="$THREAD_DIR/$id"
     mkdir "$dir"
 
-    new_post "$id" "$ip" "$poster" "$first_post"
-
-    echo "$id"
+    if new_post "$id" "$ip" "$poster" "$first_post"; then
+        echo "$id"
+    else
+        rmdir "$dir"
+        return 1
+    fi
 }
 
+# Writes a new post in the given thread. Returns nonzero and sets an error
+# message in the "error" variable if posting fails for some reason.
 new_post() {
     thid="$1"
     ip="$2"
     poster="$3"
     post="$4"
+
+    if [ -z "$post" ]; then
+        error="Can't post empty text"
+        return 1
+    fi
+
+    # If the post is too long.
+    if [ "${#post}" -gt "$MAX_POST_LEN" ]; then
+        error="Post can't be longer than $MAX_POST_LEN characters."
+        return 1
+    fi
 
     thdir="$THREAD_DIR/$thid"
     postid=`next_post_id "$thid"`
