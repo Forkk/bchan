@@ -3,6 +3,7 @@
 . ./config
 . ./param.sh
 . ./threads.sh
+. ./html.sh
 
 thid=`echo "$QUERY_STRING" | sed 's/[^0-9]//g'`
 
@@ -27,7 +28,8 @@ cat <<EOF
 <!DOCTYPE html>
 <html>
 <head>
-<title>Thread $thid -- Bchan</title>
+<title>Thread $thid &ndash; Bchan</title>
+`html_head`
 </head>
 
 <body>
@@ -53,6 +55,7 @@ cat <<EOF
     <input type="submit" value="Post">
 </form>
 
+`html_scripts`
 </body>
 </html>
 EOF
