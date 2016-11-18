@@ -86,3 +86,16 @@ post_meta() {
     date=`cat "$file" | grep "date=" | head -n 1 | sed 's/date=//'`
 }
 
+# Renders a post as html
+post_html() {
+    thid="$1"
+    post="$2"
+    post_meta "$thid" "$post"
+    cat <<EOF
+<p>#$post by $poster on `date -d @$date`</p>
+<pre>
+`post_text "$thid" "$post"`
+</pre>
+EOF
+}
+

@@ -29,22 +29,16 @@ cat <<EOF
     <input type="submit" value="Create Thread">
 </form>
 
-<h2>Threads</h2>
 EOF
 
 for th in `list_threads | sort -r`; do
-    echo "<h3>Thread $th</h3>"
-    echo "<p>First 10 posts:</p>"
-    echo "<ul>"
-    for post in `seq 0 10`; do
+    echo "<h2>Thread $th</h2>"
+    for post in `seq 0 5`; do
         file="$THREAD_DIR/$th/$post"
         if [ -f "$file" ]; then
-            cat <<EOF
-<li>`post_text "$th" "$post"`</li>
-EOF
+            post_html "$th" "$post"
         fi
     done
-    echo "</ul>"
     echo "<a href=\"$URL_ROOT/thread.cgi?$th\">Full thread</a>"
 done
 

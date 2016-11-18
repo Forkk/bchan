@@ -38,13 +38,7 @@ cat <<EOF
 EOF
 
 for post in `list_posts "$thid"`; do
-    post_meta "$thid" "$post"
-    cat <<EOF
-<p>#$post by $poster on `date -d @$date`</p>
-EOF
-    echo "<pre>"
-    post_text "$thid" "$post"
-    echo "</pre>"
+    post_html "$thid" "$post"
 done
 
 cat <<EOF
