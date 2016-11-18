@@ -1,0 +1,5 @@
+# Ignore thread data
+data/
+config
+
+*.swp

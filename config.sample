@@ -1,0 +1,3 @@
+THREAD_DIR=data
+URL_ROOT=/
+INDEX_URL=/
