@@ -32,7 +32,7 @@ if [ ! -d "$THREAD_DIR/$thread" ]; then
     error "Unknown thread $thread."
 fi
 
-new_post "$thread" "$REMOTE_ADDR" "$msg"
+new_post "$thread" "$REMOTE_ADDR" Anonymous "$msg"
 
 echo "Location: $URL_ROOT/thread.cgi?$thread"
 echo

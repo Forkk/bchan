@@ -22,7 +22,7 @@ query=`cat /dev/stdin`
 post_text=`echo "$query" | sed 's/content=//' | urldecode | htmlencode`
 
 # Make the new thread.
-thid=`new_thread "$REMOTE_ADDR" "$post_text"`
+thid=`new_thread "$REMOTE_ADDR" Anonymous "$post_text"`
 
 # Redirect to the new thread.
 echo "Location: $URL_ROOT/thread.cgi?$thid"

@@ -36,29 +36,32 @@ next_post_id() {
 new_thread() {
     # This chan is anonymous, but we need a way to ban people, so we track some
     # form of identification (currently IP address).
-    uid="$1"
-    first_post="$2"
+    ip="$1"
+    poster="$2"
+    first_post="$3"
 
     id=`next_thread_id`
     dir="$THREAD_DIR/$id"
     mkdir "$dir"
 
-    new_post "$id" "$uid" "$first_post"
+    new_post "$id" "$ip" "$poster" "$first_post"
 
     echo "$id"
 }
 
 new_post() {
     thid="$1"
-    uid="$2"
-    post="$3"
+    ip="$2"
+    poster="$3"
+    post="$4"
 
     thdir="$THREAD_DIR/$thid"
     postid=`next_post_id "$thid"`
 
     cat <<EOF > "$thdir/$postid"
-poster=$uid
-date=`date`
+poster=$poster
+ip=$ip
+date=`date +%s`
 ----
 $post
 EOF
@@ -70,5 +73,16 @@ post_text() {
     postid="$2"
 
     cat "$THREAD_DIR/$thid/$postid" | sed -n '/----/,$p' | tail -n +2
+}
+
+# Loads the metadata of a post into environment variables.
+post_meta() {
+    thid="$1"
+    postid="$2"
+
+    file="$THREAD_DIR/$thid/$postid"
+    poster=`cat "$file" | grep "poster=" | head -n 1 | sed 's/poster=//'`
+    ip=`cat "$file" | grep "ip=" | head -n 1 | sed 's/ip=//'`
+    date=`cat "$file" | grep "date=" | head -n 1 | sed 's/date=//'`
 }
 
