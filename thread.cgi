@@ -33,9 +33,13 @@ cat <<EOF
 </head>
 
 <body>
+
+<header>
 <h1>Thread $thid</h1>
 <a href="$INDEX_URL">Back to thread list</a>
+</header>
 
+<main>
 <h2>Posts</h2>
 EOF
 
@@ -50,12 +54,14 @@ cat <<EOF
     Type your post below and press post.
     <br/>
     <input type="hidden" name="thread" value="$thid">
-    <textarea name="content" rows="8" cols="50"></textarea>
+    <textarea name="content"></textarea>
     <br/>
     <input type="submit" value="Post">
 </form>
+</main>
 
 `html_scripts`
 </body>
 </html>
 EOF
+

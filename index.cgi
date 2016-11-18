@@ -20,7 +20,10 @@ cat <<EOF
 
 <body>
 
+<body>
+<header>
 <h1>Bchan</h1>
+
 <h2>What is this?</h2>
 <p>Bchan is a simple clone of 4chan without images (for now) written entirely
 in bash. It's not meant to be anything big, just a little toy to see if I could
@@ -38,14 +41,18 @@ etc.</p>
 <form method="POST" action="$URL_ROOT/new-thread.cgi">
     Type an initial post below and click create thread to start a new thread.
     <br/>
-    <textarea name="content" rows="8" cols="50"></textarea>
+    <textarea name="content"></textarea>
     <br/>
     <input type="submit" value="Create Thread">
 </form>
+</header>
+
+<main>
 
 EOF
 
 for th in `list_threads | sort -r`; do
+    echo '<div class="thread">'
     echo "<h2>Thread $th</h2>"
     for post in `seq 0 5`; do
         file="$THREAD_DIR/$th/$post"
@@ -54,8 +61,14 @@ for th in `list_threads | sort -r`; do
         fi
     done
     echo "<a href=\"$URL_ROOT/thread.cgi?$th\">Full thread</a>"
+    echo "</div>"
 done
 
 html_scripts
+
+echo "</main>"
+
+# Footer goes here
+
 echo "</body></html>"
 

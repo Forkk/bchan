@@ -1,0 +1,69 @@
+main, header, footer {
+    margin: auto auto;
+    padding: 0 0;
+    max-width: 800px;
+}
+
+/* This style is for threads in the index. */
+.thread {
+    background-color: #F4F4F3;
+    padding: 16px;
+    margin: 10px 0px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ccc; 
+}
+
+/* This prevents the thread's title from increasing perceived padding in the
+ * thread box. */
+.thread h2 {
+    margin-top: 0px;
+}
+
+.post {
+    background-color: #efefef;
+    padding: 1px 20px;
+    border-color: #CACACA;
+    border-style: solid;
+    border-width: 1px;
+    margin: 4px;
+}
+
+body {
+    color: #666;
+    font-size: 15px;
+}
+
+h1 {
+    font-size: 24px;
+    color: #444;
+}
+
+h2 {
+    font-size: 20px;
+    color: #444;
+}
+
+p {
+    text-align: justify;
+}
+
+textarea {
+    height: 160px;
+}
+
+
+/* Desktop */
+@media only screen and (min-width:800px) {
+    textarea {
+        width: 800px;
+    }
+}
+
+/* Mobile */
+@media only screen and (max-width:799px) {
+    textarea {
+        width: 300px;
+    }
+}
+

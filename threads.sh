@@ -92,10 +92,12 @@ post_html() {
     post="$2"
     post_meta "$thid" "$post"
     cat <<EOF
+<div class="post">
 <p>#$post by $poster on `date -d @$date`</p>
 <pre>
 `post_text "$thid" "$post"`
 </pre>
+</div>
 EOF
 }
 
