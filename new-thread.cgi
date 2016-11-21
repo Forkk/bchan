@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e
 
@@ -9,8 +9,11 @@ error() {
     exit
 }
 
-if [[ "$REQUEST_METHOD" == "GET" ]]; then
-    error "You can't post threads with HTTP get."
+if [ "$REQUEST_METHOD" != "POST" ]; then
+    echo "Status: 405 Method Not Allowed"
+    echo
+    echo "You must use http POST to start new threads."
+    exit
 fi
 
 . ./config

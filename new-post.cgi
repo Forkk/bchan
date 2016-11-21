@@ -6,6 +6,13 @@ set -e
 . ./param.sh
 . ./threads.sh
 
+if [ "$REQUEST_METHOD" != "POST" ]; then
+    echo "Status: 405 Method Not Allowed"
+    echo
+    echo "You must use http POST to make new posts."
+    exit
+fi
+
 query=`cat /dev/stdin`
 
 for param in `echo "$query" | tr "&" "\n"`; do
