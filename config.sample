@@ -1,5 +1,16 @@
+# Directory to store threads in.
 THREAD_DIR=data
-URL_ROOT=/
+
+# This is prefixed before URLs that point to pages within bchan. It will always
+# be followed by a /, so if you want thread.cgi to be at "/thread.cgi", then
+# this should be left blank.
+URL_ROOT=
+
+# Path to static resources. Again, this is always followed by a /.
+STATIC_URL=/static
+
+# A separate URL path for the index.
 INDEX_URL=/
 
+# Max length of a post.
 MAX_POST_LEN=3000
