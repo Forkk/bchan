@@ -6,12 +6,12 @@ main, header, footer {
 
 /* This style is for threads in the index. */
 .thread {
-    background-color: #F4F4F3;
-    padding: 16px;
-    margin: 10px 0px;
     border-style: solid;
     border-width: 1px;
+    padding: 16px;
+    margin: 10px 0px;
     border-color: #ccc; 
+    background-color: #F4F4F3;
 }
 
 /* This prevents the thread's title from increasing perceived padding in the
@@ -21,12 +21,30 @@ main, header, footer {
 }
 
 .post {
-    background-color: #efefef;
-    padding: 1px 20px;
-    border-color: #CACACA;
     border-style: solid;
     border-width: 1px;
+    padding: 1px 20px;
     margin: 4px;
+    border-color: #CACACA;
+    background-color: #efefef;
+}
+
+.notice {
+    border-style: solid;
+    border-width: 1px;
+    padding: 1px 10px;
+    margin: 4px 0px;
+    background-color: #efefef;
+    border-color: #cacaca;
+}
+
+.notice-red {
+    background-color: #f77;
+    border-color: #f55;
+}
+
+.notice-red p {
+    color: #444;
 }
 
 body {

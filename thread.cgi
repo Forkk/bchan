@@ -36,6 +36,7 @@ cat <<EOF
 
 <header>
 <h1>Thread $thid</h1>
+`ban_notice`
 <a href="$INDEX_URL">Back to thread list</a>
 </header>
 

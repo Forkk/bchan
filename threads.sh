@@ -1,7 +1,7 @@
 # This file provides functions for accessing threads.
 
 . ./config
-
+. ./bans.sh
 
 list_threads() {
     # use grep to make sure we only get numbers
@@ -40,6 +40,11 @@ new_thread() {
     poster="$2"
     first_post="$3"
 
+    if is_banned "$ip"; then
+        error="You are banned from posting"
+        return 1
+    fi
+
     id=`next_thread_id`
     dir="$THREAD_DIR/$id"
     mkdir "$dir"
@@ -59,6 +64,11 @@ new_post() {
     ip="$2"
     poster="$3"
     post="$4"
+
+    if is_banned "$ip"; then
+        error="You are banned from posting"
+        return 1
+    fi
 
     if [ -z "$post" ]; then
         error="Can't post empty text"

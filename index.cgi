@@ -8,6 +8,7 @@ echo
 . ./config
 . ./threads.sh
 . ./html.sh
+. ./bans.sh
 
 
 cat <<EOF
@@ -23,6 +24,8 @@ cat <<EOF
 <body>
 <header>
 <h1>$SITE_TITLE</h1>
+
+`ban_notice`
 
 <h2>What is this?</h2>
 <p>$SITE_TITLE is a simple clone of 4chan without images (for now) written entirely

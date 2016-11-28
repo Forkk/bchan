@@ -1,5 +1,8 @@
+# Directory to store variable data in.
+DATA_DIR=data
+
 # Directory to store threads in.
-THREAD_DIR=data
+THREAD_DIR="$DATA_DIR/threads"
 
 # This is prefixed before URLs that point to pages within bchan. It will always
 # be followed by a /, so if you want thread.cgi to be at "/thread.cgi", then
