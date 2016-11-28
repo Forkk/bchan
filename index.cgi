@@ -14,7 +14,7 @@ cat <<EOF
 <!DOCTYPE html>
 <html>
 <head>
-<title>Bchan</title>
+<title>$SITE_TITLE</title>
 `html_head`
 </head>
 
@@ -22,14 +22,14 @@ cat <<EOF
 
 <body>
 <header>
-<h1>Bchan</h1>
+<h1>$SITE_TITLE</h1>
 
 <h2>What is this?</h2>
-<p>Bchan is a simple clone of 4chan without images (for now) written entirely
+<p>$SITE_TITLE is a simple clone of 4chan without images (for now) written entirely
 in bash. It's not meant to be anything big, just a little toy to see if I could
 make a bulletin board type thing using only shell scripts.</b>
 
-<p>To use Bchan, you can either start a new thread by typing the initial post
+<p>To use $SITE_TITLE, you can either start a new thread by typing the initial post
 in the box below, or you can post on one of the existing threads (listed
 below). All posts are anonymous, although your IP address will be stored along
 with your posts for banning purposes.</p>

@@ -12,5 +12,11 @@ STATIC_URL=/static
 # A separate URL path for the index.
 INDEX_URL=/
 
+# This is used anywhere a page refers to the name of the website.
+SITE_TITLE=Bchan
+
 # Max length of a post.
 MAX_POST_LEN=3000
+
+# Use this to set the timezone to display post dates.
+export TZ=America/Chicago

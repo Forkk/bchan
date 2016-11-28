@@ -28,7 +28,7 @@ cat <<EOF
 <!DOCTYPE html>
 <html>
 <head>
-<title>Thread $thid &ndash; Bchan</title>
+<title>Thread $thid &ndash; $SITE_TITLE</title>
 `html_head`
 </head>
 
