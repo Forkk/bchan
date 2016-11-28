@@ -33,6 +33,10 @@ is_banned() {
     ip="$1"
     now=`date +%s`
 
+    if [ ! -f "$BAN_FILE" ]; then
+        return 1 # Nobody is banned
+    fi
+
     if grep "$ip" "$BAN_FILE" 2>&1 >/dev/null; then
         ban_end=`grep "$ip" "$BAN_FILE" | head -n1 | awk '{ print $2; }'`
 
