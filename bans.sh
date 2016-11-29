@@ -9,7 +9,9 @@ BAN_FILE=$DATA_DIR/bans
 
 unban() {
     ip="$1"
-    sed -i "/$ip/d" "$BAN_FILE"
+    if [ -f "$BAN_FILE" ]; then
+        sed -i "/$ip/d" "$BAN_FILE"
+    fi
 }
 
 # Adds the given IP to the permanent ban list.
