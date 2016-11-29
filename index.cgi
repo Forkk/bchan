@@ -2,14 +2,13 @@
 
 set -e
 
-echo "Content-Type: text/html"
-echo
-
 . ./config
 . ./threads.sh
 . ./html.sh
 . ./bans.sh
 
+echo "Content-Type: text/html"
+echo
 
 cat <<EOF
 <!DOCTYPE html>

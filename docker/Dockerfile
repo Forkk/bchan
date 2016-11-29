@@ -9,8 +9,8 @@
 
 FROM nginx:latest
 
-# Install fcgiwrap and some things the scripts need like bc
-RUN apt-get update && apt-get install -y fcgiwrap bc
+# Install fcgiwrap and some things the scripts need like bc and uuid-gen
+RUN apt-get update && apt-get install -y fcgiwrap bc uuid-runtime
 
 COPY nginx /etc/nginx
 

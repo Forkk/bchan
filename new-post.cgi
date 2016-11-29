@@ -15,14 +15,8 @@ fi
 
 query=`cat /dev/stdin`
 
-for param in `echo "$query" | tr "&" "\n"`; do
-    if echo "$param" | grep "content=.\+" 2>&1 > /dev/null; then
-        msg=`echo "$param" | sed 's/content=//' | urldecode | htmlencode`
-    fi
-    if echo "$param" | grep "thread=.\+" 2>&1 > /dev/null; then
-        thread=`echo "$param" | sed 's/thread=//' | sed 's/[^0-9]//g'`
-    fi
-done
+msg=`get_param content "$query" | urldecode | htmlencode`
+thread=`get_param thread "$query" | urldecode | sed 's/[^0-9]//g'`
 
 error() {
     echo "Content-Type: text/plain"

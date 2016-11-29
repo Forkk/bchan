@@ -2,6 +2,7 @@
 
 . ./config
 . ./bans.sh
+. ./admins.sh
 
 list_threads() {
     # use grep to make sure we only get numbers
@@ -119,7 +120,16 @@ post_html() {
     post_meta "$thid" "$post"
     cat <<EOF
 <div class="post">
-<p>#$post by $poster on `date -d @$date`</p>
+<p>#$post by $poster on `date -d @$date`
+EOF
+    if is_mod; then
+        cat <<EOF
+<a href="$URL_ROOT/admin/ban.cgi?${thid}-${post}">ban</a> |
+<a href="$URL_ROOT/admin/rm-post.cgi?${thid}-${post}">remove</a>
+EOF
+    fi
+    cat <<EOF
+</p>
 <pre>
 `post_text "$thid" "$post"`
 </pre>

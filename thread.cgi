@@ -2,6 +2,7 @@
 
 . ./config
 . ./param.sh
+. ./admins.sh
 . ./threads.sh
 . ./html.sh
 

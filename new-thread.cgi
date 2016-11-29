@@ -22,7 +22,7 @@ fi
 
 query=`cat /dev/stdin`
 
-post_text=`echo "$query" | sed 's/content=//' | urldecode | htmlencode`
+post_text=`get_param content "$query" | urldecode | htmlencode`
 
 # Make the new thread.
 thid=`next_thread_id`
