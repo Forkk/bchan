@@ -5,6 +5,7 @@ set -e
 . ./config
 . ./param.sh
 . ./threads.sh
+. ./html.sh
 
 if [ "$REQUEST_METHOD" != "POST" ]; then
     echo "Status: 405 Method Not Allowed"
@@ -19,9 +20,12 @@ msg=`get_param content "$query" | urldecode | htmlencode`
 thread=`get_param thread "$query" | urldecode | sed 's/[^0-9]//g'`
 
 error() {
-    echo "Content-Type: text/plain"
+    echo "Content-Type: text/html"
     echo
-    echo "$1"
+    html_page "Post Failed" <<EOF
+<h1>Post Failed</h1>
+<p>$1</p>
+EOF
     exit
 }
 

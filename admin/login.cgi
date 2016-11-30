@@ -9,30 +9,19 @@ cd ..
 . ./admins.sh
 
 login_page() {
-    cat <<EOF
-Content-Type: text/html
-
-<!DOCTYPE html>
-<html>
-<head>
-<title>Admin/Moderator Login</title>
-`html_head`
-</head>
-
-<body>
-<header>
+    echo "Content-Type: text/html"
+    echo
+    html_page "Admin/Moderator Login" <<EOF
 <h1>Admin / Moderator Login</h1>
-EOF
+`
     if [ ! -z "$1" ]; then
-        cat <<EOF
+        cat <<EOF2
 <div class="notice notice-red">
     <p>$1</p>
 </div>
-EOF
+EOF2
     fi
-    cat <<EOF
-</header>
-<main>
+`
 <form method="POST">
     <table>
         <tr>
@@ -47,9 +36,7 @@ EOF
             <td><input type="submit" value="Log in"></td>
         </tr>
     </table>
-</main>
-</body>
-</html>
+</form>
 EOF
 }
 

@@ -11,7 +11,7 @@ main, header, footer {
     padding: 16px;
     margin: 10px 0px;
     border-color: #ccc; 
-    background-color: #F4F4F3;
+    background-color: #F4F4F4;
 }
 
 /* This prevents the thread's title from increasing perceived padding in the

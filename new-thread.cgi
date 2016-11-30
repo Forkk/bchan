@@ -2,23 +2,25 @@
 
 set -e
 
+. ./config
+. ./param.sh
+. ./threads.sh
+. ./html.sh
+
 error() {
-    echo "Content-Type: text/plain"
+    echo "Content-Type: text/html"
     echo
-    echo "$1"
+    html_page "Failed to Create Thread" <<EOF
+<h1>Failed to Create Thread</h1>
+<p>$1</p>
+EOF
     exit
 }
 
 if [ "$REQUEST_METHOD" != "POST" ]; then
     echo "Status: 405 Method Not Allowed"
-    echo
-    echo "You must use http POST to start new threads."
-    exit
+    error "You must use http POST to start new threads."
 fi
-
-. ./config
-. ./param.sh
-. ./threads.sh
 
 query=`cat /dev/stdin`
 

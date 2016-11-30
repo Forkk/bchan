@@ -37,21 +37,10 @@ rm_form() {
     thread=`echo "$QUERY_STRING" | cut -d '-' -f 1 | sed 's/[^0-9]//g'`
     post=`echo "$QUERY_STRING" | cut -d '-' -f 2 | sed 's/[^0-9]//g'`
 
-    cat <<EOF
-Content-Type: text/html
-
-<!DOCTYPE html>
-<html>
-<head>
-<title>Remove Post</title>
-`html_head`
-</head>
-
-<body>
-<header>
+    echo "Content-Type: text/html"
+    echo
+    html_page "Remove Post" <<EOF
 <h1>Remove Post</h1>
-</header>
-<main>
 <p>You are removing this post:</p>
 `post_html $thread $post`
 
@@ -65,9 +54,6 @@ visible on the main page.</p>
 <input type="text" name="reason">
 <input type="submit" value="Remove">
 </form>
-</main>
-</body>
-</html>
 EOF
 }
 
@@ -77,6 +63,10 @@ case "$REQUEST_METHOD" in
         ;;
     GET )
         rm_form
+        ;;
+    * )
+        echo "Status: 405 Method Not Allowed"
+        echo
         ;;
 esac
 

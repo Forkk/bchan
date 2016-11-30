@@ -8,48 +8,31 @@
 
 thid=`echo "$QUERY_STRING" | sed 's/[^0-9]//g'`
 
-if [ -z "$thid" ]; then
-    echo "Content-Type: text/plain"
-    echo
-    echo "Invalid thread ID."
-    exit
-fi
-
-if [ ! -d "$THREAD_DIR/$thid" ]; then
+if [ -z "$thid" ] || [ ! -d "$THREAD_DIR/$thid" ]; then
+    echo "Status: 404 Not Found"
     echo "Content-Type: text-plain"
     echo
-    echo "Sorry, I can't seem to find thread $thid."
+    html_page <<EOF
+<h1>Thread Not Found</h1>
+<p>Sorry, I can't seem to find that thread.</p>
+EOF
     exit
 fi
 
 echo "Content-Type: text/html"
 echo
 
-cat <<EOF
-<!DOCTYPE html>
-<html>
-<head>
-<title>Thread $thid &ndash; $SITE_TITLE</title>
-`html_head`
-</head>
-
-<body>
-
-<header>
+html_page "Thread $thid &ndash; $SITE_TITLE" <<EOF
 <h1>Thread $thid</h1>
 `ban_notice`
 <a href="$INDEX_URL">Back to thread list</a>
-</header>
-
-<main>
 <h2>Posts</h2>
-EOF
-
-for post in `list_posts "$thid"`; do
+`
+for post in \`list_posts "$thid"\`; do
     post_html "$thid" "$post"
 done
+`
 
-cat <<EOF
 <h2>New Post</h2>
 
 <form method="POST" action="$URL_ROOT/new-post.cgi">
@@ -60,10 +43,5 @@ cat <<EOF
     <br/>
     <input type="submit" value="Post">
 </form>
-</main>
-
-`html_scripts`
-</body>
-</html>
 EOF
 

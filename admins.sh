@@ -3,6 +3,7 @@
 
 . ./config
 . ./param.sh
+. ./html.sh
 
 # The admin list. This is a three-column file where each line contains a
 # username, that user's access level (either "admin" or "mod"), and then the
@@ -44,9 +45,12 @@ is_mod() {
 require_mod() {
     if ! is_mod; then
         echo "Status: 403 Forbidden"
-        echo "Content-Type: text/plain"
+        echo "Content-Type: text/html"
         echo
-        echo "You don't have access to this page."
+        html_page <<EOF
+<h1>Access Denied</h1>
+<p>You don't have access to this.</p>
+EOF
         exit 0
     fi
 }
@@ -56,7 +60,10 @@ require_admin() {
         echo "Status: 403 Forbidden"
         echo "Content-Type: text/plain"
         echo
-        echo "You don't have access to this page."
+        html_page <<EOF
+<h1>Access Denied</h1>
+<p>You don't have access to this.</p>
+EOF
         exit 0
     fi
 }
@@ -72,8 +79,11 @@ login_as() {
     echo "Content-Type: text/html"
     echo "Set-Cookie: sessid=$sessid; HtmlOnly; Path=/"
     echo
-    echo "<p>Logged in as $1</p>"
-    echo "<a href=\"$URL_ROOT/admin/index.cgi\">Admin panel</a>"
+    html_page <<EOF
+<h1>Logged in as $1</h1>
+<a href="$INDEX_URL">Home</a>
+<a href="$URL_ROOT/admin/index.cgi">Admin panel</a>
+EOF
     exit 0
 }
 
