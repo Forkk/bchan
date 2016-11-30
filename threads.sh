@@ -16,7 +16,7 @@ list_posts() {
 # This function finds the next thread's id by listing files in the thread dir,
 # sorting them, and adding one to the highest number.
 next_thread_id() {
-    last_id=`list_threads | sort -r | head -n 1`
+    last_id=`ls -1A $THREAD_DIR | grep '\.\?[0-9]\+' | sed 's/\.//g' | sort -rg | head -n 1`
     if [ -z "$last_id" ]; then
         echo 0
     else
@@ -25,7 +25,10 @@ next_thread_id() {
 }
 
 next_post_id() {
-    last_id=`list_posts $1 | sort -r | head -n 1`
+    # This function uses ls and sed instead of list_posts so that it also
+    # considers the dot-prefixed files left behind by the remove post
+    # function. This prevents removed post IDs from being reused.
+    last_id=`ls -1A $THREAD_DIR/$1 | grep '\.\?[0-9]\+' | sed 's/\.//g' | sort -rg | head -n 1`
     if [ -z "$last_id" ]; then
         echo 0
     else
@@ -94,6 +97,21 @@ $post
 EOF
 }
 
+# Moves a post to $DATA_DIR/removed/<thread>-<post>. In the original folder,
+# creates a file called '.<postid>', which prevents the post's ID from being
+# re-used.
+remove_post() {
+    thid="$1"
+    postid="$2"
+
+    mv "$THREAD_DIR/$thid/$postid" "$THREAD_DIR/$thid/.$postid"
+
+    # If the thread now has no posts, remove it too.
+    if [ -z "`ls -1 "$THREAD_DIR/$thid/"`" ]; then
+        mv "$THREAD_DIR/$thid" "$THREAD_DIR/.$thid"
+    fi
+}
+
 # Prints the text of a post.
 post_text() {
     thid="$1"
@@ -124,8 +142,8 @@ post_html() {
 EOF
     if is_mod; then
         cat <<EOF
-<a href="$URL_ROOT/admin/ban.cgi?${thid}-${post}">ban</a> |
-<a href="$URL_ROOT/admin/rm-post.cgi?${thid}-${post}">remove</a>
+<a href="$URL_ROOT/admin/ban.cgi?${thid}-${post}" target="_blank">ban</a> |
+<a href="$URL_ROOT/admin/rm-post.cgi?${thid}-${post}" target="_blank">remove</a>
 EOF
     fi
     cat <<EOF
