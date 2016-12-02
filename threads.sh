@@ -6,11 +6,11 @@
 
 list_threads() {
     # use grep to make sure we only get numbers
-    ls -1 "$THREAD_DIR" | grep '[0-9]\+' | sort -rg
+    ls -1 "$THREAD_DIR" | grep '[0-9]\+'
 }
 
 list_posts() {
-    ls -1 "$THREAD_DIR/$1/" | grep '[0-9]\+' | sort -rg
+    ls -1 "$THREAD_DIR/$1/" | grep '[0-9]\+' | sort -g
 }
 
 # This function finds the next thread's id by listing files in the thread dir,

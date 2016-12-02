@@ -11,7 +11,7 @@ echo "Content-Type: text/html"
 echo
 
 html_thread_list() {
-    for th in `list_threads | sort -r`; do
+    for th in `list_threads | sort -rg`; do
         echo '<div class="thread">'
         echo "<h2>Thread $th</h2>"
         for post in `seq 0 5`; do
