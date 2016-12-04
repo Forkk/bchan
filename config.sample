@@ -21,5 +21,8 @@ SITE_TITLE=Bchan
 # Max length of a post.
 MAX_POST_LEN=3000
 
+# Number of seconds between posts for an IP. Doesn't apply to mods and admins.
+POST_COOLDOWN=300
+
 # Use this to set the timezone to display post dates.
 export TZ=America/Chicago

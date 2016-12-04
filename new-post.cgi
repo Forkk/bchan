@@ -25,6 +25,7 @@ error() {
     html_page "Post Failed" <<EOF
 <h1>Post Failed</h1>
 <p>$1</p>
+<a href="$INDEX_URL">Home</a> <a href="$ROOT_URL/thread.cgi?$thread">Back to thread</a>
 EOF
     exit
 }

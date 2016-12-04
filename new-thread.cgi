@@ -13,6 +13,7 @@ error() {
     html_page "Failed to Create Thread" <<EOF
 <h1>Failed to Create Thread</h1>
 <p>$1</p>
+<a href="$INDEX_URL">Home</a>
 EOF
     exit
 }

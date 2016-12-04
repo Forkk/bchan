@@ -36,6 +36,34 @@ next_post_id() {
     fi
 }
 
+# This function checks the entry in the lastpost file for the current IP and,
+# if the post time is more than $POST_COOLDOWN seconds ago, exits success and
+# sets the last post time for the current IP to now. Exits 1 if the post is
+# rate limited.
+try_post_limit() {
+    if is_mod; then
+        # mods and admins aren't rate limited
+        return 0;
+    fi
+
+    if [ -f "$THREAD_DIR/lastpost" ] && grep -q "$ip" "$THREAD_DIR/lastpost"; then
+        now="$(date '+%s')"
+
+        lastpost="$(grep "$ip" "$THREAD_DIR/lastpost" | awk '{ print $2; }')"
+        if [ "$(echo "$lastpost + $POST_COOLDOWN" | bc)" -lt "$now" ]; then
+            # If the last post was less than $POST_COOLDOWN ago, set it to now
+            # and return 0.
+            sed 's/^\('"$ip"'\) .\+/\1 '"$now"'/' -i "$THREAD_DIR/lastpost"
+            return 0
+        else
+            return 1
+        fi
+    else
+        echo "$ip $now" >> "$THREAD_DIR/lastpost"
+        return 0
+    fi
+}
+
 # This function makes a new thread and prints its id.
 new_thread() {
     # This chan is anonymous, but we need a way to ban people, so we track some
@@ -46,6 +74,11 @@ new_thread() {
 
     if is_banned "$ip"; then
         error="You are banned from posting"
+        return 1
+    fi
+
+    if ! try_post_limit; then
+        export error="You've posted a thread too recently. Just chill for a bit."
         return 1
     fi
 
