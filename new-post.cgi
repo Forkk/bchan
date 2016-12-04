@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
@@ -14,10 +14,10 @@ if [ "$REQUEST_METHOD" != "POST" ]; then
     exit
 fi
 
-query=`cat /dev/stdin`
+query=$(cat /dev/stdin)
 
-msg=`get_param content "$query" | urldecode | htmlencode`
-thread=`get_param thread "$query" | urldecode | sed 's/[^0-9]//g'`
+msg=$(get_param content "$query" | urldecode | htmlencode)
+thread=$(get_param thread "$query" | urldecode | sed 's/[^0-9]//g')
 
 error() {
     echo "Content-Type: text/html"

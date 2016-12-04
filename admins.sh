@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This "module" provides functions for managing and accessing admin and
 # moderator accounts as well as their login sessions.
 
@@ -14,9 +16,10 @@ ADMIN_FILE=$DATA_DIR/admins
 SESS_FILE=$DATA_DIR/sess
 
 # Exits successfully if the current session is logged in as an admin.
+# shellcheck disable=SC2155
 is_admin() {
     if whoami; then
-        local level=`user_level "$SESS_USER"`
+        local level=$(user_level "$SESS_USER")
         if [ "$level" = "admin" ]; then
             return 0
         else
@@ -27,9 +30,10 @@ is_admin() {
     fi
 }
 
+# shellcheck disable=SC2155
 is_mod() {
     if whoami; then
-        local level=`user_level "$SESS_USER"`
+        local level=$(user_level "$SESS_USER")
         if [ "$level" = "mod" ] || [ "$level" = "admin" ]; then
             return 0
         else
@@ -47,7 +51,7 @@ require_mod() {
         echo "Status: 403 Forbidden"
         echo "Content-Type: text/html"
         echo
-        html_page <<EOF
+        html_page "Access Denied" <<EOF
 <h1>Access Denied</h1>
 <p>You don't have access to this.</p>
 EOF
@@ -60,7 +64,7 @@ require_admin() {
         echo "Status: 403 Forbidden"
         echo "Content-Type: text/plain"
         echo
-        html_page <<EOF
+        html_page "Access Denied" <<EOF
 <h1>Access Denied</h1>
 <p>You don't have access to this.</p>
 EOF
@@ -72,9 +76,9 @@ EOF
 # script. This prints an entire CGI response and should be done before the
 # script has printed anything.
 login_as() {
-    sessid=`gen_sessid`
+    sessid=$(gen_sessid)
     # Set our new session
-    echo "$1 "`date +%s`" $sessid" >> $SESS_FILE
+    echo "$1 $(date +%s) $sessid" >> "$SESS_FILE"
 
     echo "Content-Type: text/html"
     echo "Set-Cookie: sessid=$sessid; HtmlOnly; Path=/"
@@ -93,12 +97,13 @@ EOF
 # instead of "pass=$2".
 
 # Exits success if the given username and password authenticate successfully.
+# shellcheck disable=SC2155
 auth_check() {
     local user="$1"
     local pass="$2"
 
-    local inhash=`hash_passwd "$pass"`
-    local uhash=`user_hash "$user"`
+    local inhash=$(hash_passwd "$pass")
+    local uhash=$(user_hash "$user")
 
     if [ "$inhash" = "$uhash" ]; then
         # Authentication succeeded.
@@ -111,13 +116,13 @@ auth_check() {
 # Prints the user level for the given user.
 user_level() {
     local user="$1"
-    cat "$ADMIN_FILE" | grep "$user" | awk '{ print $2; }'
+    grep "$user" "$ADMIN_FILE" | awk '{ print $2; }'
 }
 
 # Prints the hashed password for the given user.
 user_hash() {
     local user="$1"
-    cat "$ADMIN_FILE" | grep "$user" | awk '{ print $3; }'
+    grep "$user" "$ADMIN_FILE" | awk '{ print $3; }'
 }
 
 # TODO: Salt passwords too
@@ -128,8 +133,9 @@ hash_passwd() {
 # Checks who the current session ID is logged in as. Stores the result in
 # "$SESS_USER" if there is a user. If the session ID is invalid or expired,
 # returns nonzero.
+# shellcheck disable=SC2155
 whoami() {
-    local sessid=`get_cookie sessid`
+    local sessid=$(get_cookie sessid)
     if [ -z "$sessid" ]; then
         return 1
     fi
@@ -145,9 +151,9 @@ whoami() {
 # "$SESS_USER" if there is a user. If the session ID is invalid or expired,
 # returns nonzero.
 whois_sessid() {
-    sess_info=`cat "$SESS_FILE" | grep "$1"`
-    if [ "$?" = "0" ]; then
-        SESS_USER=`echo "$sess_info" | awk '{ print $1; }'`
+    local sess_info
+    if sess_info=$(grep "$1" "$SESS_FILE"); then
+        SESS_USER=$(echo "$sess_info" | awk '{ print $1; }')
         return 0
     else
         return 1

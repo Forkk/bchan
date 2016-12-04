@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 . ./config
 . ./param.sh
@@ -6,7 +6,7 @@
 . ./threads.sh
 . ./html.sh
 
-thid=`echo "$QUERY_STRING" | sed 's/[^0-9]//g'`
+thid=${QUERY_STRING/[^0-9]//g}
 
 if [ -z "$thid" ] || [ ! -d "$THREAD_DIR/$thid" ]; then
     echo "Status: 404 Not Found"
@@ -24,14 +24,14 @@ echo
 
 html_page "Thread $thid &ndash; $SITE_TITLE" <<EOF
 <h1>Thread $thid</h1>
-`ban_notice`
+$(ban_notice)
 <a href="$INDEX_URL">Back to thread list</a>
 <h2>Posts</h2>
-`
-for post in \`list_posts "$thid"\`; do
+$(
+for post in $(list_posts "$thid"); do
     post_html "$thid" "$post"
 done
-`
+)
 
 <h2>New Post</h2>
 

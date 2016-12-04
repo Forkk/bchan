@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This "module" provides functions for managing the ban lists.
 
 . ./config
@@ -19,7 +21,7 @@ perm_ban() {
     ip="$1"
     # Remove any existing bans for the IP.
     unban "$ip"
-    echo "$ip inf" >> $BAN_FILE
+    echo "$ip inf" >> "$BAN_FILE"
 }
 
 # Bans the given IP until the given date.
@@ -27,22 +29,22 @@ ban_until() {
     ip="$1"
     date="$2"
     unban "$ip"
-    echo "$ip $date" >> $BAN_FILE
-} 
+    echo "$ip $date" >> "$BAN_FILE"
+}
 
 # Exits success if the given IP is banned.
 is_banned() {
     ip="$1"
-    now=`date +%s`
+    now=$(date +%s)
 
     if [ ! -f "$BAN_FILE" ]; then
         return 1 # Nobody is banned
     fi
 
-    if grep "$ip" "$BAN_FILE" 2>&1 >/dev/null; then
-        ban_end=`grep "$ip" "$BAN_FILE" | head -n1 | awk '{ print $2; }'`
+    if grep -q "$ip" "$BAN_FILE"; then
+        ban_end=$(grep "$ip" "$BAN_FILE" | head -n1 | awk '{ print $2; }')
 
-        if [ "$ban_end" == "inf" ] || [ "$now" -gt "$ban_end" ]; then
+        if [ "$ban_end" = "inf" ] || [ "$now" -gt "$ban_end" ]; then
             return 1
         else
             return 0

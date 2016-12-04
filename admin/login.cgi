@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
@@ -13,7 +13,7 @@ login_page() {
     echo
     html_page "Admin/Moderator Login" <<EOF
 <h1>Admin / Moderator Login</h1>
-`
+$(
     if [ ! -z "$1" ]; then
         cat <<EOF2
 <div class="notice notice-red">
@@ -21,7 +21,7 @@ login_page() {
 </div>
 EOF2
     fi
-`
+)
 <form method="POST">
     <table>
         <tr>
@@ -40,10 +40,11 @@ EOF2
 EOF
 }
 
+# shellcheck disable=SC2155
 do_login() {
-    local query=`cat /dev/stdin`
-    local pass=`get_param password "$query" | urldecode`
-    local user=`get_param username "$query" | urldecode | sed 's/[^a-zA-Z0-9_.-]//g'`
+    local query=$(cat /dev/stdin)
+    local pass=$(get_param password "$query" | urldecode)
+    local user=$(get_param username "$query" | urldecode | sed 's/[^a-zA-Z0-9_.-]//g')
 
     if auth_check "$user" "$pass"; then
         login_as "$user"

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This file provides functions for accessing threads.
 
 . ./config
@@ -6,17 +8,20 @@
 
 list_threads() {
     # use grep to make sure we only get numbers
+    # shellcheck disable=SC2010
     ls -1 "$THREAD_DIR" | grep '[0-9]\+'
 }
 
 list_posts() {
+    # shellcheck disable=SC2010
     ls -1 "$THREAD_DIR/$1/" | grep '[0-9]\+' | sort -g
 }
 
 # This function finds the next thread's id by listing files in the thread dir,
 # sorting them, and adding one to the highest number.
 next_thread_id() {
-    last_id=`ls -1A $THREAD_DIR | grep '\.\?[0-9]\+' | sed 's/\.//g' | sort -rg | head -n 1`
+    # shellcheck disable=SC2010
+    last_id=$(ls -1A "$THREAD_DIR" | grep '\.\?[0-9]\+' | sed 's/\.//g' | sort -rg | head -n 1)
     if [ -z "$last_id" ]; then
         echo 0
     else
@@ -28,7 +33,8 @@ next_post_id() {
     # This function uses ls and sed instead of list_posts so that it also
     # considers the dot-prefixed files left behind by the remove post
     # function. This prevents removed post IDs from being reused.
-    last_id=`ls -1A $THREAD_DIR/$1 | grep '\.\?[0-9]\+' | sed 's/\.//g' | sort -rg | head -n 1`
+    # shellcheck disable=SC2010
+    last_id=$(ls -1A "$THREAD_DIR/$1" | grep '\.\?[0-9]\+' | sed 's/\.//g' | sort -rg | head -n 1)
     if [ -z "$last_id" ]; then
         echo 0
     else
@@ -82,7 +88,7 @@ new_thread() {
         return 1
     fi
 
-    id=`next_thread_id`
+    id=$(next_thread_id)
     dir="$THREAD_DIR/$id"
     mkdir "$dir"
 
@@ -119,12 +125,12 @@ new_post() {
     fi
 
     thdir="$THREAD_DIR/$thid"
-    postid=`next_post_id "$thid"`
+    postid=$(next_post_id "$thid")
 
     cat <<EOF > "$thdir/$postid"
 poster=$poster
 ip=$ip
-date=`date +%s`
+date=$(date +%s)
 ----
 $post
 EOF
@@ -140,7 +146,7 @@ remove_post() {
     mv "$THREAD_DIR/$thid/$postid" "$THREAD_DIR/$thid/.$postid"
 
     # If the thread now has no posts, remove it too.
-    if [ -z "`ls -1 "$THREAD_DIR/$thid/"`" ]; then
+    if [ -z "$(ls -1 "$THREAD_DIR/$thid/")" ]; then
         mv "$THREAD_DIR/$thid" "$THREAD_DIR/.$thid"
     fi
 }
@@ -150,7 +156,7 @@ post_text() {
     thid="$1"
     postid="$2"
 
-    cat "$THREAD_DIR/$thid/$postid" | sed -n '/----/,$p' | tail -n +2
+    sed -n '/----/,$p' "$THREAD_DIR/$thid/$postid" | tail -n +2
 }
 
 # Loads the metadata of a post into environment variables.
@@ -159,9 +165,9 @@ post_meta() {
     postid="$2"
 
     file="$THREAD_DIR/$thid/$postid"
-    poster=`cat "$file" | grep "poster=" | head -n 1 | sed 's/poster=//'`
-    ip=`cat "$file" | grep "ip=" | head -n 1 | sed 's/ip=//'`
-    date=`cat "$file" | grep "date=" | head -n 1 | sed 's/date=//'`
+    poster=$(grep "poster=" "$file" | head -n 1 | sed 's/poster=//')
+    ip=$(grep "ip=" "$file" | head -n 1 | sed 's/ip=//')
+    date=$(grep "date=" "$file" | head -n 1 | sed 's/date=//')
 }
 
 # Renders a post as html
@@ -171,7 +177,7 @@ post_html() {
     post_meta "$thid" "$post"
     cat <<EOF
 <div class="post">
-<p>#$post by $poster on `date -d @$date`
+<p>#$post by $poster on $(date -d "@$date")
 EOF
     if is_mod; then
         cat <<EOF
@@ -182,7 +188,7 @@ EOF
     cat <<EOF
 </p>
 <pre>
-`post_text "$thid" "$post"`
+$(post_text "$thid" "$post")
 </pre>
 </div>
 EOF

@@ -18,31 +18,31 @@ require_mod
 # of that form, bans the user.
 
 do_ban() {
-    query=`cat /dev/stdin`
+    query=$(cat /dev/stdin)
 
-    thread=`get_param thread "$query"`
-    post=`get_param post "$query"`
+    thread=$(get_param thread "$query")
+    post=$(get_param post "$query")
 
     echo "Content-Type: text/plain"
     echo
 
     # this sets $ip
-    post_meta $thread $post
-    ban_until "$ip" `date -d +1day +%s`
+    post_meta "$thread" "$post"
+    ban_until "$ip" "$(date -d +1day +%s)"
 
     echo "User banned"
 }
 
 ban_form() {
-    thread=`echo "$QUERY_STRING" | cut -d '-' -f 1 | sed 's/[^0-9]//g'`
-    post=`echo "$QUERY_STRING" | cut -d '-' -f 2 | sed 's/[^0-9]//g'`
+    thread=$(echo "$QUERY_STRING" | cut -d '-' -f 1 | sed 's/[^0-9]//g')
+    post=$(echo "$QUERY_STRING" | cut -d '-' -f 2 | sed 's/[^0-9]//g')
 
     echo "Content-Type: text/html"
     echo
     html_page "Ban" <<EOF
 <h1>Ban</h1>
 <p>You are banning someone for posting this post:</p>
-`post_html $thread $post`
+$(post_html "$thread" "$post")
 
 <p>The IP address that posted this will be banned from posting for 1 day. They
 will see a notice at the top of their screen telling them they are banned from

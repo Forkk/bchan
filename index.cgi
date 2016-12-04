@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
@@ -11,10 +11,10 @@ echo "Content-Type: text/html"
 echo
 
 html_thread_list() {
-    for th in `list_threads | sort -rg`; do
+    for th in $(list_threads | sort -rg); do
         echo '<div class="thread">'
         echo "<h2>Thread $th</h2>"
-        for post in `seq 0 5`; do
+        for post in $(seq 0 5); do
             file="$THREAD_DIR/$th/$post"
             if [ -f "$file" ]; then
                 post_html "$th" "$post"
@@ -26,7 +26,7 @@ html_thread_list() {
 }
 
 html_page "$SITE_TITLE" <<EOF
-`ban_notice`
+$(ban_notice)
 
 <h2>What is this?</h2>
 <p>$SITE_TITLE is a simple clone of 4chan without images (for now) written entirely
@@ -50,5 +50,5 @@ etc.</p>
     <input type="submit" value="Create Thread">
 </form>
 
-`html_thread_list`
+$(html_thread_list)
 EOF

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
@@ -23,12 +23,12 @@ if [ "$REQUEST_METHOD" != "POST" ]; then
     error "You must use http POST to start new threads."
 fi
 
-query=`cat /dev/stdin`
+query=$(cat /dev/stdin)
 
-post_text=`get_param content "$query" | urldecode | htmlencode`
+post_text=$(get_param content "$query" | urldecode | htmlencode)
 
 # Make the new thread.
-thid=`next_thread_id`
+thid=$(next_thread_id)
 
 if new_thread "$REMOTE_ADDR" Anonymous "$post_text"; then
     # Redirect to the new thread.

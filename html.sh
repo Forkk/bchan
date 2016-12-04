@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This file defines functions which print pre-defined parts of the html
 # document like scripts and stylesheets.
 
@@ -5,7 +7,7 @@
 # attributes.
 html_head() {
     echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
-    echo '<link rel="stylesheet" href="'$STATIC_URL'/style.css">'
+    echo '<link rel="stylesheet" href="'"$STATIC_URL"'/style.css">'
 }
 
 # Base template for html pages. This includes all the javascript and
@@ -20,12 +22,12 @@ html_page() {
 <html>
 <head>
 <title>$1</title>
-`html_head`
+$(html_head)
 </head>
 
 <body>
 <main>
-`cat /dev/stdin`
+$(cat /dev/stdin)
 </main>
 </body>
 </html>

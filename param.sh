@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This is a "module" meant to be sourced by cgi screpts to gain access to
 # functions for handling query parameters.
 
@@ -14,8 +16,8 @@ htmlencode() {
 get_param() {
     local pname="$1"
     local query="$2"
-    for kv in `echo "$query" | tr "&" "\n"`; do
-        if echo "$kv" | grep "$pname=.\+" 2>&1 > /dev/null; then
+    for kv in $(echo "$query" | tr "&" "\n"); do
+        if echo "$kv" | grep -q "$pname=.\+"; then
             echo -n "$kv" | sed 's/'"$pname"'=//'
         fi
     done
@@ -27,8 +29,9 @@ get_param() {
 get_cookie() {
     local name="$1"
 
-    for kv in `echo "$HTTP_COOKIE" | sed 's/; /\n/g'`; do
-        if echo "$kv" | grep "$name=.\+" 2>&1 > /dev/null; then
+    # shellcheck disable=SC2001
+    for kv in $(echo "$HTTP_COOKIE" | sed 's/; /\n/g'); do
+        if echo "$kv" | grep -q "$name=.\+"; then
             echo -n "$kv" | sed 's/'"$name"'=//'
             unset kv
             return 0

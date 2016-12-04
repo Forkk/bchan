@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
@@ -20,6 +20,6 @@ html_page "Admen Panel" <<EOF
 <a href="$INDEX_URL">Home</a>
 
 <p>You are $SESS_USER</p>
-<p>Your level is `user_level $SESS_USER`</p>
+<p>Your level is $(user_level "$SESS_USER")</p>
 EOF
 
