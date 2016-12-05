@@ -23,14 +23,16 @@ do_ban() {
     thread=$(get_param thread "$query")
     post=$(get_param post "$query")
 
-    echo "Content-Type: text/plain"
-    echo
-
     # this sets $ip
     post_meta "$thread" "$post"
     ban_until "$ip" "$(date -d +1day +%s)"
 
-    echo "User banned"
+    echo "Content-Type: text/html"
+    echo
+    html_page "User banned" <<EOF
+<h1>User Banned</h1>
+<a href="$INDEX_URL">Home</a>
+EOF
 }
 
 ban_form() {
